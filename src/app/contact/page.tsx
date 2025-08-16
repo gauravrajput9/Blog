@@ -17,7 +17,7 @@ async function createContactFunction(data: ContactFormData) {
 }
 
 export default function ContactPage() {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset } = useForm<ContactFormData>();
 
   const {isPending, mutate} = useMutation({
     mutationFn: (data: ContactFormData) => createContactFunction(data),
@@ -42,7 +42,7 @@ export default function ContactPage() {
           Contact Us
         </h1>
         <p className="mt-2 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Have any questions or feedback? Fill out the form below, and we'll get
+          Have any questions or feedback? Fill out the form below, and we&#39;ll get
           back to you as soon as possible.
         </p>
       </div>

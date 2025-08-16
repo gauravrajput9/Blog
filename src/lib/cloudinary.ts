@@ -40,7 +40,7 @@ export async function uploadImage(file: File, folder = "profile_pictures"): Prom
         { folder, resource_type: "image" },
         (error, result) => {
           if (error) return reject(error);
-          resolve(result as CloudinaryUploadResult);
+          resolve(result as unknown as CloudinaryUploadResult);
         }
       )
       .end(buffer);

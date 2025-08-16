@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
@@ -84,13 +83,15 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48">
                   <DropdownMenuItem>
-                    <Link href={`/user/${session.user.id}`}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    <Link href={`/user/${(session.user as any).id}`}>
                       My Account
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <Link href={`/user/${session.user.id}/edit-profile`}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    <Link href={`/user/${(session.user as any).id}/edit-profile`}>
                       Edit Profile
                     </Link>
                   </DropdownMenuItem>

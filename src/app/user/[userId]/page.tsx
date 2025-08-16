@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { fetchUser, UserParams } from "./edit-profile/page";
+import { fetchUser, UserParams } from "@/lib/userUtils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -122,7 +122,8 @@ const ViewAccount = () => {
       </div>
 
       <div className="mt-6">
-        <Button onClick={() => router.push(`/user/${session?.user?.id}/edit-profile`)}>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <Button onClick={() => router.push(`/user/${(session?.user as any)?.id}/edit-profile`)}>
           Edit Profile
         </Button>
       </div>

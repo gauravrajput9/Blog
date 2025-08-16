@@ -56,7 +56,7 @@ const ViewAuthor = () => {
       >
         <Image
           src={data?.image || "/default-avatar.png"}
-          alt={data?.name}
+          alt={data?.name || "Author avatar"}
           fill
           sizes="160px"
           className="object-cover"

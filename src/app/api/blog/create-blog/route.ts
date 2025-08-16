@@ -2,14 +2,15 @@ import { authOptions } from "@/lib/authOptions";
 import { uploadImage } from "@/lib/cloudinary";
 import { connectDB } from "@/lib/mogoDb";
 import { Blog } from "@/models/blog.model";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request){
     try {
         await connectDB()
 
-        const session = await getServerSession(authOptions)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const session = await getServerSession(authOptions) as any
         console.log(session?.user)
 
         if(!session || !session?.user || !session.user.id) {

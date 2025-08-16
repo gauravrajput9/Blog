@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
-import { getUser } from "@/actions/user.actions";
 import { useParams } from "next/navigation";
+import { fetchUser, UserParams } from "@/lib/userUtils";
 
 const editProfileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -23,10 +23,6 @@ const editProfileSchema = z.object({
     ),
 });
 
-export type UserParams = {
-  userId: string;
-};
-
 type EditFormData = z.infer<typeof editProfileSchema>;
 
 async function editUser(formData: FormData) {
@@ -38,11 +34,6 @@ async function editUser(formData: FormData) {
   return res.json();
 }
 
-export async function fetchUser(userId: string) {
-  const data = await getUser(userId);
-  console.log(data);
-  return data;
-}
 
 export default function EditProfilePage() {
   const params = useParams<UserParams>();
@@ -145,7 +136,7 @@ export default function EditProfilePage() {
           </div>
           {errors.profilePicture && (
             <p className="text-red-500 text-sm">
-              {errors.profilePicture.message}
+              {errors.profilePicture.message as string}
             </p>
           )}
         </div>
@@ -162,7 +153,7 @@ export default function EditProfilePage() {
             className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
           />
           {errors.name && (
-            <p className="text-red-500 text-sm">{errors.name.message}</p>
+            <p className="text-red-500 text-sm">{errors.name.message as string}</p>
           )}
         </div>
 
@@ -178,7 +169,7 @@ export default function EditProfilePage() {
             className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
+            <p className="text-red-500 text-sm">{errors.email.message as string}</p>
           )}
         </div>
 
@@ -194,7 +185,7 @@ export default function EditProfilePage() {
             className="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white"
           ></textarea>
           {errors.bio && (
-            <p className="text-red-500 text-sm">{errors.bio.message}</p>
+            <p className="text-red-500 text-sm">{errors.bio.message as string}</p>
           )}
         </div>
 
