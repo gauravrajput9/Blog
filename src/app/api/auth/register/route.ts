@@ -28,17 +28,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3️⃣ Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4️⃣ Create new user
     const createdUser = await User.create({
       name: name.trim(),
       email: email.trim(),
       password: hashedPassword,
     });
 
-    // 5️⃣ Return success (without password)
     return NextResponse.json(
       {
         message: "User registered successfully",

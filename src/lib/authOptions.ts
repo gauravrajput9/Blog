@@ -1,4 +1,4 @@
-import type { AuthOptions } from "next-auth";
+import type { AuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { connectDB } from "./mogoDb";
@@ -18,6 +18,7 @@ export const authOptions: AuthOptions = {
   ],
 
   callbacks: {
+    // Create user in DB if not exists
     async signIn({ user }) {
       await connectDB();
 
@@ -35,15 +36,14 @@ export const authOptions: AuthOptions = {
       return true;
     },
 
-
-    async session({ session }: { session: any }) {
+    // Add DB id and role to session
+    async session({ session }: { session: Session }) {
       await connectDB();
 
-      if (!session.user?.email) {
-        return session;
-      }
+      if (!session.user?.email) return session;
 
-      const dbUser = await User.findOne({ email: session.user.email }).lean<IUser & { _id: mongoose.Types.ObjectId }>();
+      const dbUser = await User.findOne({ email: session.user.email })
+        .lean<IUser & { _id: mongoose.Types.ObjectId }>();
 
       if (dbUser && session.user) {
         session.user.id = dbUser._id.toString();

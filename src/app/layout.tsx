@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReactQueryProvider } from "../lib/QueryProvider";
-import { ThemeProvider } from "../lib/theme-provider";
+import { ThemeProvider } from "../lib/theme-provider"; // next-themes wrapper
 import { Providers } from "@/lib/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/footer";
@@ -24,20 +24,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReactQueryProvider>
-          <Providers>
-            <Navbar />
-            {children}
-          </Providers>
-          <Footer />
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Providers>
+              <Navbar />
+              {children}
+            </Providers>
+            <Footer />
+          </ThemeProvider>
         </ReactQueryProvider>
       </body>
     </html>

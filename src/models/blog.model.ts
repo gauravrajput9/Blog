@@ -3,6 +3,7 @@ import { IUser } from "@/models/user.models";
 
 export interface IBlog extends Document {
   title: string;
+  category: string;
   content: string;
   coverImage?: string; 
   author: IUser["_id"];
@@ -17,6 +18,11 @@ const BlogSchema: Schema<IBlog> = new Schema(
     coverImage: {
       type: String,
       default: null,
+    },
+    category: {
+      type: String,
+      required: true,
+      enum: ["technology", "health", "finance", "lifestyle"],
     },
     author: {
       type: Schema.Types.ObjectId,

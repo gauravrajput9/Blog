@@ -12,10 +12,15 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { data: session, status } = useSession();
+
+  const menuItems = ["Home", "Blogs", "About", "Contact"];
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-lg transition-colors duration-300">
@@ -29,9 +34,9 @@ export default function Navbar() {
             MyBlog
           </Link>
 
-          {/* Menu for Desktop */}
+          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            {["Home", "Blogs", "About", "Contact"].map((item) => (
+            {menuItems.map((item) => (
               <Link
                 key={item}
                 href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
@@ -54,21 +59,53 @@ export default function Navbar() {
               {theme === "dark" ? "🌞" : "🌙"}
             </Button>
 
-            {/* Profile Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">Profile</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href="/edit-profile">Edit Profile</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Profile / Auth */}
+            {status === "loading" ? (
+              <span className="text-gray-500">Loading...</span>
+            ) : session?.user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="p-0 rounded-full overflow-hidden"
+                  >
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt={session.user.name || "Profile"}
+                        width={36}
+                        height={36}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-500 text-lg">👤</span>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-48">
+                  <DropdownMenuItem>
+                    <Link href={`/user/${session.user.id}`}>
+                      My Account
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link href={`/user/${session.user.id}/edit-profile`}>
+                      Edit Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href="/api/auth/signout">Sign Out</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/login">
+                <Button variant="outline">Sign Up</Button>
+              </Link>
+            )}
 
-            {/* Mobile menu button */}
+            {/* Mobile Menu Button */}
             <button
               className="md:hidden p-2 text-gray-600 dark:text-gray-300"
               onClick={() => setIsOpen(!isOpen)}
@@ -82,7 +119,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 px-4 py-3 space-y-2">
-          {["Home", "Blogs", "About", "Contact"].map((item) => (
+          {menuItems.map((item) => (
             <Link
               key={item}
               href={item === "Home" ? "/" : `/${item.toLowerCase()}`}
