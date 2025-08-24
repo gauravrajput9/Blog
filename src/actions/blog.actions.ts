@@ -1,8 +1,10 @@
 "use server";
+import { connectDB } from "@/lib/mogoDb";
 import { Blog } from "@/models/blog.model";
 
 export const fetchAllBlogs = async () => {
   try {
+    await connectDB()
     const blogs = await Blog.find().populate("author", "name email bio").lean();
     
     if (!blogs) {

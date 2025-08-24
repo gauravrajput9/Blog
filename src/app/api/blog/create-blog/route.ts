@@ -11,7 +11,6 @@ export async function POST(req: Request){
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const session = await getServerSession(authOptions) as any
-        console.log(session?.user)
 
         if(!session || !session?.user || !session.user.id) {
             return NextResponse.json({

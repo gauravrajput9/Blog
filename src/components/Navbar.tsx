@@ -14,12 +14,22 @@ import { Button } from "./ui/button";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
+type Session = {
+  name: string
+  expires: string
+  id: string
+  email: string
+  image: string
+  role: string
+
+}
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { data: session, status } = useSession();
 
-  const menuItems = ["Home", "Blogs", "About", "Contact"];
+  const menuItems = ["Home", "Blogs", "About", "Contact", "Authors"];
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-lg transition-colors duration-300">
@@ -83,18 +93,24 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-48">
                   <DropdownMenuItem>
-                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                    <Link href={`/user/${(session.user as any).id}`}>
+                    <Link href={`/user/${(session.user as Session).id}`}>
                       My Account
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                    <Link href={`/user/${(session.user as any).id}/edit-profile`}>
+                    <Link href={`/user/${(session.user as Session).id}/edit-profile`}>
                       Edit Profile
                     </Link>
                   </DropdownMenuItem>
+
+                  {/* Conditional Dashboard Link for Authors */}
+                  {(session.user as Session).role === "admin" && (
+                    <DropdownMenuItem>
+                      <Link href="/admin-dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Link href="/api/auth/signout">Sign Out</Link>
                   </DropdownMenuItem>

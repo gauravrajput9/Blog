@@ -30,14 +30,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <ReactQueryProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <Providers>
               <Navbar />
-              {children}
+
+              <main className="flex-grow">{children}</main>
             </Providers>
+
             <Footer />
           </ThemeProvider>
         </ReactQueryProvider>

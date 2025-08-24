@@ -15,7 +15,7 @@ type Blog = {
     email: string;
   };  
   content: string;
-  imageUrl?: string;
+  coverImage?: string;
   createdAt: string;
 };
 
@@ -55,10 +55,10 @@ export default function ViewBlogsPage() {
             key={blog._id}
             className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
           >
-            {blog.imageUrl && (
+            {blog.coverImage && (
               <div className="relative h-48 w-full">
                 <Image
-                  src={blog.imageUrl}
+                  src={blog.coverImage}
                   alt={blog.title}
                   fill
                   className="object-cover"

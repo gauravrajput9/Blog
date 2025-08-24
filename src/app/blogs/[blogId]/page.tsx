@@ -7,6 +7,7 @@ import Image from 'next/image'
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import Loading from './loading'
 
 export type Author = {
   name: string
@@ -47,7 +48,7 @@ const ViewIndividualBlog = () => {
     enabled: !!blogId,
   })
 
-  if (isLoading) return <p className="p-6 animate-pulse">Loading blog...</p>
+  if (isLoading) return <Loading/>
   if (error) return <p className="p-6 text-red-500 dark:text-red-400">Failed to load blog.</p>
 
   return (
